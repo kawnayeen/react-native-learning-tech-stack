@@ -52903,17 +52903,26 @@ var ListItem = function (_Component) {
     }
 
     babelHelpers.createClass(ListItem, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {
+            _reactNative.LayoutAnimation.spring();
+        }
+    }, {
         key: 'renderDescription',
         value: function renderDescription() {
             var _props = this.props,
                 library = _props.library,
-                selectedLibraryId = _props.selectedLibraryId;
+                expanded = _props.expanded;
 
-            if (library.id === selectedLibraryId) {
+            if (expanded) {
                 return _react2.default.createElement(
-                    _reactNative.Text,
+                    _common.CardSection,
                     null,
-                    library.description
+                    _react2.default.createElement(
+                        _reactNative.Text,
+                        { style: { flex: 1 } },
+                        library.description
+                    )
                 );
             }
         }
@@ -52961,8 +52970,10 @@ var styles = {
     }
 };
 
-var mapStateToProps = function mapStateToProps(state) {
-    return { selectedLibraryId: state.selectedLibraryId };
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+    return {
+        expanded: state.selectedLibraryId === ownProps.library.id
+    };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, actions)(ListItem);
